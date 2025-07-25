@@ -22,7 +22,7 @@ struct BannerView: View {
             }
             ForEach(movies, id: \.id) { movie in
                 let count = movies.count - 1
-                let posterPath = APIEndpoint.imagePath(imagePath: movie.posterPath ?? "", size: 200)
+                let posterPath =  APIEndpoint.image(path: movie.posterPath ?? "", size: 200).url
                 Group{
                     AsyncImage(url: URL(string: posterPath)){ result in
                                 result.image?

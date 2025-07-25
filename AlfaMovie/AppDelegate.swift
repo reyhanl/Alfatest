@@ -11,11 +11,13 @@ import Firebase
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
+    static var orientation = UIInterfaceOrientationMask.portrait
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        FirebaseApp.configure()
         return true
     }
-    
-    //YOU CAN ADD OTHER UIApplicationDelegate here
-    
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientation
+    }
 }

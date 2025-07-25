@@ -17,7 +17,7 @@ class HomeRepository: HomeRepositoryProtocol{
     
     func fetchDiscover(page: Int) async throws -> [Movie] {
         let queryItems = [URLQueryItem(name: "page", value: "\(page)"), URLQueryItem(name: "language", value: "en-US")]
-        var urlComps = URLComponents(string: APIEndpoint.baseURL + APIEndpoint.discover)
+        var urlComps = URLComponents(string: APIEndpoint.discover.url)
         urlComps?.queryItems = queryItems
         print("fetchDiscover url: \(String(describing: urlComps?.url))")
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}
@@ -31,7 +31,7 @@ class HomeRepository: HomeRepositoryProtocol{
     
     func fetchNowPlaying(page: Int) async throws -> [Movie] {
         let queryItems = [URLQueryItem(name: "page", value: "\(page)"), URLQueryItem(name: "language", value: "en-US")]
-        var urlComps = URLComponents(string: APIEndpoint.baseURL + APIEndpoint.nowPlaying)
+        var urlComps = URLComponents(string: APIEndpoint.nowPlaying.url)
         urlComps?.queryItems = queryItems
         print("fetchDiscover url: \(String(describing: urlComps?.url))")
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}

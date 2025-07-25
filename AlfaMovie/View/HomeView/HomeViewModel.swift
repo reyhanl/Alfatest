@@ -10,12 +10,14 @@ import SwiftUI
 class HomeViewModel: ObservableObject{
     @Published var nowPlayingMovies: [Movie] = []
     @Published var movies: [Movie] = []
+    @Published var selectedMovie: Movie?
+    @Published var pushDetail: Bool = false
     let service: HomeUseCaseProtocol
     @State var imagePath: String
     
     init(service: HomeUseCaseProtocol) {
         self.service = service
-        imagePath = APIEndpoint.imagePath
+        imagePath =  APIEndpoint.imageBaseURL
     }
     
     func viewDidLoad(){
@@ -45,7 +47,14 @@ class HomeViewModel: ObservableObject{
     func userDidScrollToBottom(){
         Task{
             let movies = try await service.fetchMoreDiscover()
-            self.movies.append(contentsOf: movies)
+            await MainActor.run {
+                self.movies.append(contentsOf: movies)
+            }
         }
+    }
+    
+    func userDidTapOnCard(movie: Movie){
+        selectedMovie = movie
+        pushDetail = true
     }
 }
