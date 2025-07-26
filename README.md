@@ -16,9 +16,9 @@ A simple Movie Library App where you can browse movies from moviedb Database.
 ## Installation
 This app is created in **XCode version 16.2**. It might not be possible to run it in lower version of XCode, If that is the case please do let me know. 
 
-1. Clone or download zip from [https://bitbucket.org/lerepertoire/nawatechtest/src/main/](https://github.com/reyhanl/Alfatest/)
+1. Clone or download zip from [https://github.com/reyhanl/Alfatest.git](https://github.com/reyhanl/Alfatest.git)
 
-    > `git clone [https://github.com/reyhanl/directory.git](https://github.com/reyhanl/Alfatest/)`
+    > `git clone ttps://github.com/reyhanl/Alfatest.git`
 
 2. Go to project directory
 
