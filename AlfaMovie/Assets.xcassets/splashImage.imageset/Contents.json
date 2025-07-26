@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iPhone 14 & 15 Pro Max - 2.png",
+      "filename" : "iPhone 14 & 15 Pro Max - 3.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iPhone 14 & 15 Pro Max - 2@2x.png",
+      "filename" : "iPhone 14 & 15 Pro Max - 3@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "iPhone 14 & 15 Pro Max - 2@3x.png",
+      "filename" : "iPhone 14 & 15 Pro Max - 3@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
