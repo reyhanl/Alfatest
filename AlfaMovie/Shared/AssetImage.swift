@@ -8,4 +8,5 @@
 enum AssetImage: String{
     case noInternetImage = "noInternetImage"
     case reloadImage = "reloadImage"
+    case splashImage = "splashImage"
 }
