@@ -179,7 +179,7 @@ struct MovieDetailView: View {
         .navigationBarBackButtonHidden(true) // Add this
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
-                Image(systemName: "chevron.left").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 20, height: 20).tint(Color(uiColor: .systemBackground)).foregroundStyle(Color(uiColor: .systemBackground))
+                Image(systemName: "chevron.left.circle.fill").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 20, height: 20).tint(Color(uiColor: .systemBackground)).foregroundStyle(Color(uiColor: .systemBackground))
                     .shadow(color: Color.primary, radius: 4)
                     .contentShape(Rectangle()).onTapGesture {
                         dismiss()
