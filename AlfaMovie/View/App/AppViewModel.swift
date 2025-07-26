@@ -72,34 +72,34 @@ class AppViewModel: ObservableObject {
     }
     
     @objc func slowInternetNotification(){
-            Task{
-                await MainActor.run {
-                    withAnimation {
-                        shouldShowSlowInternetView = true
-                    }
+        Task{
+            await MainActor.run {
+                withAnimation {
+                    shouldShowSlowInternetView = true
                 }
-                try? await Task.sleep(nanoseconds: 5000_000_000)
-                await MainActor.run {
-                    withAnimation {
-                        shouldShowSlowInternetView = false
-                    }
+            }
+            try? await Task.sleep(nanoseconds: 5000_000_000)
+            await MainActor.run {
+                withAnimation {
+                    shouldShowSlowInternetView = false
                 }
+            }
         }
     }
     
     @objc func sessionIssueNotification(){
-            Task{
-                await MainActor.run {
-                    withAnimation {
-                        shouldShowSessionIssue = true
-                    }
+        Task{
+            await MainActor.run {
+                withAnimation {
+                    shouldShowSessionIssue = true
                 }
-                try? await Task.sleep(nanoseconds: 5000_000_000)
-                await MainActor.run {
-                    withAnimation {
-                        shouldShowSessionIssue = false
-                    }
+            }
+            try? await Task.sleep(nanoseconds: 5000_000_000)
+            await MainActor.run {
+                withAnimation {
+                    shouldShowSessionIssue = false
                 }
+            }
         }
     }
     

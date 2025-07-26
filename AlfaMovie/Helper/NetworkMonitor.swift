@@ -17,13 +17,13 @@ final class NetworkMonitor {
     
     private let monitor: NWPathMonitor
     private let queue = DispatchQueue(label: "NetworkMonitor")
-
+    
     // Publisher that emits network status changes
     private let statusSubject: CurrentValueSubject<Bool, Never>
     var statusPublisher: AnyPublisher<Bool, Never> {
         return statusSubject.eraseToAnyPublisher()
     }
-
+    
     private init() {
         self.monitor = NWPathMonitor()
         self.statusSubject = CurrentValueSubject(true) // Assume online by default
@@ -35,7 +35,7 @@ final class NetworkMonitor {
         
         monitor.start(queue: queue)
     }
-
+    
     deinit {
         monitor.cancel()
     }

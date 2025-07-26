@@ -28,7 +28,7 @@ class VideoPlayerViewController: UIViewController {
         } else {
             config.requiresUserActionForMediaPlayback = false
         }
-
+        
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.navigationDelegate = self
@@ -117,5 +117,5 @@ extension VideoPlayerViewController: WKNavigationDelegate{
     func webView(_ webView: WKWebView,didFinish navigation: WKNavigation!) {
         print("loaded")
     }
-
+    
 }

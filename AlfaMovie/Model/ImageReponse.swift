@@ -23,7 +23,7 @@ struct MediaImage: Codable, Identifiable {
     let voteCount: Int
     let width: Int
     var id = UUID()
-
+    
     enum CodingKeys: String, CodingKey {
         case aspectRatio = "aspect_ratio"
         case height

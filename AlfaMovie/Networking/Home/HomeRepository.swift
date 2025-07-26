@@ -23,9 +23,9 @@ class HomeRepository: HomeRepositoryProtocol{
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
+        //        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
         let response: DiscoverMovieResponseModel = try await executor.execute(request: request)
-//        print("movies: \(response.results)")
+        //        print("movies: \(response.results)")
         return response.results
     }
     
@@ -37,9 +37,9 @@ class HomeRepository: HomeRepositoryProtocol{
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
+        //        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
         let response: NowPlayingReponseModel = try await executor.execute(request: request)
-//        print("movies: \(response.results)")
+        //        print("movies: \(response.results)")
         return response.results ?? []
     }
 }

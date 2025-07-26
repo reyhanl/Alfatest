@@ -23,7 +23,7 @@ extension View {
                     UIViewController.attemptRotationToDeviceOrientation()
                 }
             }
-
+            
             // Ask the root view controller to refresh its orientation support
             if #available(iOS 16.0, *) {
                 windowScene.keyWindow?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
@@ -60,15 +60,15 @@ extension View {
         }
     }
     
-//    @ViewBuilder
-//    func shimmer() -> some View {
-//        if isLoading.wrappedValue {
-//            self.modifier(Shimmer())
-//                .redacted(reason: .placeholder)
-//        } else {
-//            self
-//        }
-//    }
+    //    @ViewBuilder
+    //    func shimmer() -> some View {
+    //        if isLoading.wrappedValue {
+    //            self.modifier(Shimmer())
+    //                .redacted(reason: .placeholder)
+    //        } else {
+    //            self
+    //        }
+    //    }
     
     func shimmer() -> some View {
         self.modifier(Shimmer())

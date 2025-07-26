@@ -10,7 +10,7 @@ struct DiscoverMovieResponseModel: Codable {
     let results: [Movie]
     let totalPages: Int
     let totalResults: Int
-
+    
     enum CodingKeys: String, CodingKey {
         case page
         case results

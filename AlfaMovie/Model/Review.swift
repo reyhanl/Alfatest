@@ -13,7 +13,7 @@ struct ReviewResponse: Codable {
     let results: [Review]
     let totalPages: Int
     let totalResults: Int
-
+    
     enum CodingKeys: String, CodingKey {
         case id, page, results
         case totalPages = "total_pages"
@@ -37,7 +37,7 @@ struct Review: Codable, Hashable {
     let id: String
     let updatedAt: String
     let url: String
-
+    
     enum CodingKeys: String, CodingKey {
         case author
         case authorDetails = "author_details"
@@ -54,7 +54,7 @@ struct AuthorDetails: Codable {
     let username: String?
     let avatarPath: String?
     let rating: Double?
-
+    
     enum CodingKeys: String, CodingKey {
         case name, username, rating
         case avatarPath = "avatar_path"

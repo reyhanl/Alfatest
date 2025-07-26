@@ -68,7 +68,7 @@ class MovieDetailViewModel: ObservableObject{
                     isReloading = false
                 }
             }
-
+            
             do {
                 let reviews = try await fetchReviews()
                 await MainActor.run {
@@ -87,7 +87,7 @@ class MovieDetailViewModel: ObservableObject{
                     isReloading = false
                 }
             }
-
+            
             do {
                 let images = try await fetchImages()
                 await MainActor.run {
@@ -104,7 +104,7 @@ class MovieDetailViewModel: ObservableObject{
                     isReloading = false
                 }
             }
-
+            
             do {
                 let videos = try await fetchVideos()
                 await MainActor.run {
@@ -119,17 +119,17 @@ class MovieDetailViewModel: ObservableObject{
                     isReloading = false
                 }
             }
-
+            
             await MainActor.run {
                 self.isReloading = false
                 self.isReloadingFailed = self.isFetchingDetailFailed ||
-                                         self.isFetchingReviewFailed ||
-                                         self.isFetchingImagesFailed ||
-                                         self.isFetchingVideosFailed
+                self.isFetchingReviewFailed ||
+                self.isFetchingImagesFailed ||
+                self.isFetchingVideosFailed
             }
         }
     }
-
+    
     func observe(){
         notificationCenter.addObserver(self, selector: #selector(backOnline), name: .backOnline, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(backOnline), name: .userAskToReload, object: nil)
@@ -234,5 +234,5 @@ class MovieDetailViewModel: ObservableObject{
     @objc func backOnline(){
         refresh()
     }
-
+    
 }

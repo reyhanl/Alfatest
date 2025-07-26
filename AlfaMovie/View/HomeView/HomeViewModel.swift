@@ -10,7 +10,7 @@ import SwiftUI
 class HomeViewModel: ObservableObject{
     @Published var nowPlayingMovies: [Movie] = [] //Banner
     @Published var movies: [Movie] = []
-
+    
     @Published var isFetchingBannerStatus: Bool = false
     @Published var isFetchingFeedStatus: Bool = false
     @Published var isReloading: Bool = false

@@ -57,7 +57,7 @@ struct NoInternetView: View{
                                 }
                             }
                         }
-
+                        
                     }.padding(.horizontal, 20).padding(.vertical, 20)
                 }.background(Color(uiColor: .systemBackground)).clipShape(RoundedRectangle(cornerRadius: 20)).padding(10)
             }

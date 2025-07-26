@@ -24,7 +24,7 @@ struct Movie: Codable, Hashable {
     let voteAverage: Double
     let voteCount: Int
     let uuid = UUID()
-
+    
     enum CodingKeys: String, CodingKey {
         case adult
         case backdropPath = "backdrop_path"

@@ -14,7 +14,7 @@ class NetworkExecutor{
         request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
         request.setValue("no-cache", forHTTPHeaderField: "Pragma")
         request.setValue("0", forHTTPHeaderField: "Expires")
-
+        
         let authentication = RemoteConfigProvider.shared.authentication()
         request.setValue("Bearer \(authentication)", forHTTPHeaderField: "Authorization")
         
@@ -24,7 +24,7 @@ class NetworkExecutor{
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw URLError(.badServerResponse)
             }
-
+            
             guard (200...299).contains(httpResponse.statusCode) else {
                 // Optional: throw a custom error with the statusCode or message from `data`
                 throw CustomError.statusCode(httpResponse.statusCode)

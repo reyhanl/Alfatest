@@ -12,7 +12,7 @@ import Firebase
 class AppDelegate: NSObject, UIApplicationDelegate {
     
     static var orientation = UIInterfaceOrientationMask.portrait
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -27,7 +27,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         return true
     }
-
+    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return AppDelegate.orientation
     }

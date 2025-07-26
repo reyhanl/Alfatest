@@ -8,7 +8,7 @@
 import Foundation
 
 class MovieDetailViewRepository: MovieDetailViewRepositoryProtocol{
-
+    
     let executor: NetworkExecutor
     
     init(executor: NetworkExecutor) {
@@ -23,9 +23,9 @@ class MovieDetailViewRepository: MovieDetailViewRepositoryProtocol{
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
+        //        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
         let response: MovieDetail = try await executor.execute(request: request)
-//        print("movies: \(response.results)")
+        //        print("movies: \(response.results)")
         return response
     }
     
@@ -35,9 +35,9 @@ class MovieDetailViewRepository: MovieDetailViewRepositoryProtocol{
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
+        //        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
         let response: ImageResponse = try await executor.execute(request: request)
-//        print("movies: \(response.results)")
+        //        print("movies: \(response.results)")
         return response.posters
     }
     
@@ -49,9 +49,9 @@ class MovieDetailViewRepository: MovieDetailViewRepositoryProtocol{
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
+        //        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
         let response: ReviewResponse = try await executor.execute(request: request)
-//        print("movies: \(response.results)")
+        //        print("movies: \(response.results)")
         return response.results
     }
     
@@ -63,9 +63,9 @@ class MovieDetailViewRepository: MovieDetailViewRepositoryProtocol{
         guard let url = urlComps?.url else{throw CustomError.urlIsInvalid}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
+        //        request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: [])
         let response: VideoResponse = try await executor.execute(request: request)
-//        print("movies: \(response.results)")
+        //        print("movies: \(response.results)")
         return response.results
     }
 }

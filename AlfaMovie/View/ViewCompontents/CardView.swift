@@ -42,7 +42,7 @@ struct CardView: View {
                         EmptyView()
                     }}
                 .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                 
             }
         }

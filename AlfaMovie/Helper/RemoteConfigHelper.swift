@@ -79,7 +79,7 @@ final class RemoteConfigProvider {
     }
     
     /**
-         Function for fectch values from the cloud
+     Function for fectch values from the cloud
      */
     func fetchCloudValues() {
         remoteConfig.fetch { [weak self] (status, error) -> Void in

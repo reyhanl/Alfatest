@@ -29,7 +29,7 @@ struct VideoItem: Codable, Identifiable {
     let official: Bool
     let publishedAt: String
     let id: String
-
+    
     enum CodingKeys: String, CodingKey {
         case iso639_1 = "iso_639_1"
         case iso3166_1 = "iso_3166_1"
