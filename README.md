@@ -3,22 +3,35 @@
 # AlfaPlay
 
 ## Notes
-I put the notes up here because it is very important, the Git history gets messed up because I made a mistake. The .gitignore ignores some very important files from the beginning resulting in the project won't run before **f58b2864c743a74579f9e35243546947fac834b6** commit.
+I put the notes up here because it is very important, the Git history gets messed up because I made a mistake. 
+The .gitignore ignores some very important files from the beginning resulting in the project won't run if you are using 
+any commit before **f58b2864c743a74579f9e35243546947fac834b6** (message: FIX GITIGNORE ignoring some swift files).
 I apologise for that, but I do hope you can still get the idea from the history.
 
 ## Overview
 A simple Movie Library App where you can browse movies from moviedb Database.
 
+UI: `SwiftUI`
+Architecture: `MVVM`
+
 ## Libraries
 
+### Apple Internal Libraries
+- `SwiftUI`
+- `Combine` (just a lil 🤏🏻)
+- `WKWebView`
+
+### External Libraries
 - [Firebase Remote Config] - A simple library (a lil overkill) to securely fetching Authentication Token
+
+I usually use Kingfisher for Image caching but I don't want to use Cocoapods for this project.
 
 ## Installation
 This app is created in **XCode version 16.2**. It might not be possible to run it in lower version of XCode, If that is the case please do let me know. 
 
 1. Clone or download zip from [https://github.com/reyhanl/Alfatest.git](https://github.com/reyhanl/Alfatest.git)
 
-    > `git clone ttps://github.com/reyhanl/Alfatest.git`
+    > `git clone https://github.com/reyhanl/Alfatest.git`
 
 2. Go to project directory
 
