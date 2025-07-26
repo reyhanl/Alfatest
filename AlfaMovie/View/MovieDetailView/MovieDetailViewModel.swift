@@ -43,7 +43,10 @@ class MovieDetailViewModel: ObservableObject{
     
     func refresh() {
         isReloading = true
-
+        isFetchingDetail = true
+        isFetchingImages = true
+        isFetchingReview = true
+        isFetchingVideos = true
         Task {
             do {
                 let detail = try await fetchDetail()
@@ -54,9 +57,15 @@ class MovieDetailViewModel: ObservableObject{
                 }
             } catch {
                 await MainActor.run {
-                    self.isFetchingDetail = false
-                    self.isFetchingDetailFailed = true
-                    self.isReloading = false
+                    isFetchingDetail = false
+                    isFetchingDetailFailed = true
+                    isFetchingImages = false
+                    isFetchingImagesFailed = true
+                    isFetchingReview = false
+                    isFetchingReviewFailed = true
+                    isFetchingVideos = false
+                    isFetchingVideosFailed = true
+                    isReloading = false
                 }
             }
 
@@ -69,9 +78,13 @@ class MovieDetailViewModel: ObservableObject{
                 }
             } catch {
                 await MainActor.run {
-                    self.isFetchingReview = false
-                    self.isFetchingReviewFailed = true
-                    self.isReloading = false
+                    isFetchingReview = false
+                    isFetchingReviewFailed = true
+                    isFetchingImages = false
+                    isFetchingImagesFailed = true
+                    isFetchingVideos = false
+                    isFetchingVideosFailed = true
+                    isReloading = false
                 }
             }
 
@@ -84,9 +97,11 @@ class MovieDetailViewModel: ObservableObject{
                 }
             } catch {
                 await MainActor.run {
-                    self.isFetchingImages = false
-                    self.isFetchingImagesFailed = true
-                    self.isReloading = false
+                    isFetchingImages = false
+                    isFetchingImagesFailed = true
+                    isFetchingVideos = false
+                    isFetchingVideosFailed = true
+                    isReloading = false
                 }
             }
 
@@ -99,9 +114,9 @@ class MovieDetailViewModel: ObservableObject{
                 }
             } catch {
                 await MainActor.run {
-                    self.isFetchingVideos = false
-                    self.isFetchingVideosFailed = true
-                    self.isReloading = false
+                    isFetchingVideos = false
+                    isFetchingVideosFailed = true
+                    isReloading = false
                 }
             }
 

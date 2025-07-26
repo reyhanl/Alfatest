@@ -79,18 +79,18 @@ struct MovieDetailView: View {
                                 Spacer()
                             }.padding(.horizontal, padding)
                             section(title: "Reviews") {
-                                ScrollView(.horizontal, showsIndicators: false){
-                                    if let reviews = vm.reviews, reviews.count > 0{
-                                        LazyHStack(spacing: 10){
-                                            ForEach(0..<reviews.count, id: \.self){ index in
-                                                let review = reviews[index]
-                                                ReviewView(review: review).frame(width: 250, height: 150)
-                                                    .padding(.leading, index == 0 ? 20:0)
+                                if vm.isFetchingReview{
+                                    reviewLoadingPlaceholder()
+                                }else{
+                                    ScrollView(.horizontal, showsIndicators: false){
+                                        if let reviews = vm.reviews, reviews.count > 0{
+                                            LazyHStack(spacing: 10){
+                                                ForEach(0..<reviews.count, id: \.self){ index in
+                                                    let review = reviews[index]
+                                                    ReviewView(review: review).frame(width: 250, height: 150)
+                                                        .padding(.leading, index == 0 ? 20:0)
+                                                }
                                             }
-                                        }
-                                    }else{
-                                        if vm.isFetchingDetail{
-                                            reviewLoadingPlaceholder()
                                         }else{
                                             HStack{
                                                 Text("There are no reviews for this movie")
@@ -110,30 +110,33 @@ struct MovieDetailView: View {
                                 }
                             }
                             section(title: "Trailer") {
-                                if let video = vm.videos?.first(where: {$0.type == .trailer}){
-                                    
-                                    VStack{
-                                        ZStack{
-                                            let isFromYoutube = video.site.lowercased() == "Youtube".lowercased()
-                                            let imageURL = isFromYoutube ? APIEndpoint.youtubeThumbnail(id: video.key).url:(vm.images?.first?.filePath ?? "")
-                                            CardView(thumbnail: imageURL, cornerRadius: 10)
-                                                .frame(height: 200)
-                                            VStack{
-                                                Image(systemName: "play.fill").resizable().foregroundStyle(.white).frame(width: 50, height: 50)
-                                                    .shadow(color: .black.opacity(0.8), radius: 4)
-                                                if let video = vm.videos?.first(where: {$0.type == .trailer}),
-                                                   video.videoURL == nil
-                                                {
-                                                    Text("Video that's not from Youtube or Vimeo is not supported").foregroundStyle(.white).font(.system(size: 12).bold())
+                                if vm.isFetchingVideos{
+                                    trailerPlaceholder().padding(.horizontal, padding)
+                                }else{
+                                    if let video = vm.videos?.first(where: {$0.type == .trailer}){
+                                        
+                                        VStack{
+                                            ZStack{
+                                                let isFromYoutube = video.site.lowercased() == "Youtube".lowercased()
+                                                let imageURL = isFromYoutube ? APIEndpoint.youtubeThumbnail(id: video.key).url:(vm.images?.first?.filePath ?? "")
+                                                CardView(thumbnail: imageURL, cornerRadius: 10)
+                                                    .frame(height: 200)
+                                                VStack{
+                                                    Image(systemName: "play.fill").resizable().foregroundStyle(.white).frame(width: 50, height: 50)
+                                                        .shadow(color: .black.opacity(0.8), radius: 4)
+                                                    if let video = vm.videos?.first(where: {$0.type == .trailer}),
+                                                       video.videoURL == nil
+                                                    {
+                                                        Text("Video that's not from Youtube or Vimeo is not supported").foregroundStyle(.white).font(.system(size: 12).bold())
+                                                    }
                                                 }
                                             }
-                                        }
-                                        .contentShape(Rectangle())
-                                        .onTapGesture {
-                                            vm.userClickOnTrailer()
-                                        }
-                                    }.padding(.horizontal, padding)
-                                    
+                                            .contentShape(Rectangle())
+                                            .onTapGesture {
+                                                vm.userClickOnTrailer()
+                                            }
+                                        }.padding(.horizontal, padding)
+                                    }
                                 }
                             }
                         }.padding(.bottom, safeAreaBottom + 20).offset(y: calculatedOffsetY())
@@ -213,11 +216,18 @@ struct MovieDetailView: View {
     }
     
     @ViewBuilder
+    func trailerPlaceholder() -> some View{
+        Color.gray
+            .frame(height: 200).shimmer()
+    }
+    
+    @ViewBuilder
     func reviewLoadingPlaceholder() -> some View{
         HStack(spacing: 10){
             Color.gray.frame(width: 150, height: 75).shimmer()
                 .padding(.leading, 20)
             Color.gray.frame(width: 150, height: 75).shimmer()
+            Spacer()
         }
     }
     

@@ -72,8 +72,6 @@ class HomeViewModel: ObservableObject{
                     isFetchingFeedStatus = false
                     isReloading = false
                 }
-                initialFeedFetchFailed = true
-                isReloading = false
                 print("Error: \(String(describing: error))")
             }
         }

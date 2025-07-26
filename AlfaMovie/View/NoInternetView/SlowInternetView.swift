@@ -24,6 +24,9 @@ struct SlowInternetView: View{
         .clipShape(Capsule())
         .contentShape(Rectangle())
         .onTapGesture {
+            withAnimation {
+                isPresented = false
+            }
             actions.reload()
         }
     }
