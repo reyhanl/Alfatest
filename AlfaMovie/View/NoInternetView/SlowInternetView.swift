@@ -10,12 +10,13 @@ import SwiftUI
 struct SlowInternetView: View{
     
     @Binding var isPresented: Bool
+    let text: String
     var actions: Actions
     
     var body: some View{
         HStack(){
             Group{
-                Text("Your internet seems to be slow, reload?").font(.system(size: 14).bold())
+                Text(text).font(.system(size: 14).bold())
                 Image(systemName: "arrow.trianglehead.2.clockwise").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 14, height: 14).foregroundStyle(Color(uiColor: .systemBackground)).tint(Color(uiColor: .systemBackground))
             }.padding(.horizontal, 10).padding(.vertical, 10)
         }

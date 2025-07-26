@@ -14,6 +14,7 @@ class AppViewModel: ObservableObject {
     @Published var shouldShowMainView: Bool = false
     @Published var shouldShowNoInternetConnection: Bool = false
     @Published var shouldShowSlowInternetView: Bool = false
+    @Published var shouldShowSessionIssue: Bool = false
     @Published var showFailedToFetchRemoteConfig: Bool = false
     private var cancellables = Set<AnyCancellable>()
     let notificationCenter = NotificationCenter.default
@@ -63,6 +64,7 @@ class AppViewModel: ObservableObject {
         NotificationCenter.default.addObserver(self, selector: #selector(noInternet), name: .noInternetNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(backOnline), name: .backOnline, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(slowInternetNotification), name: .slowInternetNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionIssueNotification), name: .sessionIssue, object: nil)
     }
     
     func userAskToReload(){
@@ -80,6 +82,22 @@ class AppViewModel: ObservableObject {
                 await MainActor.run {
                     withAnimation {
                         shouldShowSlowInternetView = false
+                    }
+                }
+        }
+    }
+    
+    @objc func sessionIssueNotification(){
+            Task{
+                await MainActor.run {
+                    withAnimation {
+                        shouldShowSessionIssue = true
+                    }
+                }
+                try? await Task.sleep(nanoseconds: 5000_000_000)
+                await MainActor.run {
+                    withAnimation {
+                        shouldShowSessionIssue = false
                     }
                 }
         }
