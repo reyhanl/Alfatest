@@ -1,6 +1,16 @@
 
 
 # AlfaPlay
+<img src="https://github.com/reyhanl/Dump/blob/f59c768fc05b62bb82f5487858994a8419939240/image1.png?raw=true" width="100%" />
+
+## Snippets
+<div align="center">
+  <img src="https://github.com/reyhanl/Dump/blob/f59c768fc05b62bb82f5487858994a8419939240/swipingAnimation.gif?raw=true" width="20%" />
+  <img src="https://github.com/reyhanl/Dump/blob/f59c768fc05b62bb82f5487858994a8419939240/shimmer.gif?raw=true" width="20%" />
+  <img src="https://github.com/reyhanl/Dump/blob/f59c768fc05b62bb82f5487858994a8419939240/bouncyAnimation.gif?raw=true" width="20%" />
+</div>
+
+
 
 ## Notes
 I put the notes up here because it is very important, the Git history gets messed up because I made a mistake. 
