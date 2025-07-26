@@ -14,11 +14,13 @@ enum APIEndpoint {
     case videos(id: Int)
     case image(path: String, size: Int)
     case youtubeVideo(id: String)
+    case vimeoVideo(id: String)
     case youtubeThumbnail(id: String)
 
     static var baseURL: String { "https://api.themoviedb.org/3" }
     static var imageBaseURL: String { "https://image.tmdb.org/t/p/" }
     static var youtubeURL: String { "https://www.youtube.com/embed/" }
+    static var vimeoURL: String { "https://player.vimeo.com/video/" }
     static var youtubeThumbnailURL: String { "https://img.youtube.com/vi/" }
 
     var path: String {
@@ -41,6 +43,8 @@ enum APIEndpoint {
             return "\(id)?&autoplay=1"
         case .youtubeThumbnail(let id):
             return "\(id)/hqdefault.jpg"
+        case .vimeoVideo(let id):
+            return "\(id)"
         }
     }
 
@@ -48,7 +52,7 @@ enum APIEndpoint {
         switch self {
         case .nowPlaying, .discover, .reviews, .image, .images(_), .detail(_), .videos(_):
             return "get"
-        case .youtubeVideo(_), .youtubeThumbnail(_):
+        case .youtubeVideo(_), .youtubeThumbnail(_), .vimeoVideo(_):
             return ""
         }
     }
@@ -61,6 +65,8 @@ enum APIEndpoint {
             return Self.youtubeURL + path
         case .youtubeThumbnail(let id):
             return Self.youtubeThumbnailURL + path
+        case .vimeoVideo(let id):
+            return Self.vimeoURL + path
         default:
             return Self.baseURL + path
         }

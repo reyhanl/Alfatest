@@ -157,9 +157,11 @@ class MovieDetailViewModel: ObservableObject{
         }
     }
     
-    func userClickOnTrailer(video: VideoItem){
-        playVideo = video
-        shouldPlayVideo = true
+    func userClickOnTrailer(){
+        if let video = videos?.first(where: {$0.type == .trailer}), let videoURL = video.videoURL{
+            playVideo = video
+            shouldPlayVideo = true
+        }
     }
     
     func fetchDetail() async throws -> MovieDetail{

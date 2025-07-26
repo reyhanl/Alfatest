@@ -40,6 +40,18 @@ struct VideoItem: Codable, Identifiable {
     }
 }
 
+extension VideoItem{
+    var videoURL: String?{
+        if site.lowercased() == "Youtube".lowercased(){
+            return APIEndpoint.youtubeVideo(id: key).url
+        }else if site.lowercased() == "vimeo".lowercased(){
+            return APIEndpoint.vimeoVideo(id: key).url
+        }else{
+            return nil
+        }
+    }
+}
+
 enum VideoTypeEnum: String {
     case trailer
     case clip

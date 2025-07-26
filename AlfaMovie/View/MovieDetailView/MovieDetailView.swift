@@ -114,14 +114,23 @@ struct MovieDetailView: View {
                                     
                                     VStack{
                                         ZStack{
-                                            CardView(thumbnail: APIEndpoint.youtubeThumbnail(id: video.key).url, cornerRadius: 10)
+                                            let isFromYoutube = video.site.lowercased() == "Youtube".lowercased()
+                                            let imageURL = isFromYoutube ? APIEndpoint.youtubeThumbnail(id: video.key).url:(vm.images?.first?.filePath ?? "")
+                                            CardView(thumbnail: imageURL, cornerRadius: 10)
                                                 .frame(height: 200)
-                                            Image(systemName: "play.fill").resizable().foregroundStyle(.white).frame(width: 50, height: 50)
-                                                .shadow(color: .black.opacity(0.8), radius: 4)
+                                            VStack{
+                                                Image(systemName: "play.fill").resizable().foregroundStyle(.white).frame(width: 50, height: 50)
+                                                    .shadow(color: .black.opacity(0.8), radius: 4)
+                                                if let video = vm.videos?.first(where: {$0.type == .trailer}),
+                                                   video.videoURL == nil
+                                                {
+                                                    Text("Video that's not from Youtube or Vimeo is not supported").foregroundStyle(.white).font(.system(size: 12).bold())
+                                                }
+                                            }
                                         }
                                         .contentShape(Rectangle())
                                         .onTapGesture {
-                                            vm.userClickOnTrailer(video: video)
+                                            vm.userClickOnTrailer()
                                         }
                                     }.padding(.horizontal, padding)
                                     
@@ -155,12 +164,11 @@ struct MovieDetailView: View {
             vm.viewDidLoad()
         }
         .fullScreenCover(isPresented: $vm.shouldPlayVideo) {
-            if let video = vm.playVideo{
-                let videoURL = APIEndpoint.youtubeVideo(id: video.key)
-                VideoPlayerRepresentable(videoURL: videoURL.url)
+            if let video = vm.playVideo, let videoURL = video.videoURL{
+                VideoPlayerRepresentable(videoURL: videoURL)
                     .ignoresSafeArea()
                     .onAppear {
-                        print("youtubeURL: \(videoURL.url)")
+                        print("youtubeURL: \(videoURL)")
                         modifyOrientation(.landscape)
                     }
                     .onDisappear {
