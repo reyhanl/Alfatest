@@ -28,15 +28,17 @@ struct HomeView: View {
     var body: some View {
             ZStack{
                 VStack{
-                    GeometryReader{ geometry in
-                        Color.white.onAppear {
-                            screenSize = geometry.size
-                            topSafeArea = geometry.safeAreaInsets.top
+                    Color.clear.overlay {
+                        GeometryReader{ geometry in
+                            Color(uiColor: .systemBackground).onAppear {
+                                screenSize = geometry.size
+                                topSafeArea = geometry.safeAreaInsets.top
+                            }
                         }
                     }
                 }
                 VStack{
-                    ScrollView{
+                    ScrollView(showsIndicators: false){
                         Color.clear.frame(height: 0).overlay {
                             GeometryReader{ geometry in
                                 if #available(iOS 17.0, *) {
@@ -54,10 +56,13 @@ struct HomeView: View {
                                 }
                             }
                         }
-                        BannerView(movies: $vm.nowPlayingMovies, actions: .init(userClickOnBanner: { movie in
-                            vm.userDidTapOnCard(movie: movie)
-                        }))
-                            .frame(height: 200 + extraHeight())
+                            BannerView(movies: $vm.nowPlayingMovies, actions: .init(userClickOnBanner: { movie in
+                                vm.userDidTapOnCard(movie: movie)
+                            }))
+                                .frame(
+                                    height: 200 + extraHeight()
+                                )
+
                         
 //                            .background {
 //                                if vm.isFetchingBannerStatus{
@@ -95,7 +100,7 @@ struct HomeView: View {
                                             }
                                         Text(movie.title).lineLimit(1)
                                             .font(.subheadline.bold())
-                                            .foregroundStyle(.black)
+                                            .foregroundColor(.primary)
                                             .padding(.bottom, 20)
                                     }
                                 }
@@ -115,8 +120,8 @@ struct HomeView: View {
                             HStack{
                                 Spacer()
                                 Group{
-                                    Text("Reload").font(.system(size: 14).bold())
-                                    Image(systemName: "arrow.trianglehead.2.clockwise").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).tint(.black).foregroundStyle(.black).frame(width: 14, height: 14).foregroundStyle(.white).tint(.white)
+                                    Text("Reload").font(.system(size: 14).bold()).foregroundStyle(Color(uiColor: .systemBackground))
+                                    Image(systemName: "arrow.trianglehead.2.clockwise").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).tint(Color(uiColor: .systemBackground)).foregroundStyle(Color(uiColor: .systemBackground)).frame(width: 14, height: 14).foregroundStyle(Color(uiColor: .systemBackground)).tint(Color(uiColor: .systemBackground))
                                 }.contentShape(Rectangle()).onTapGesture(perform: {
                                     vm.retry()
                                 })
@@ -186,7 +191,7 @@ struct HomeView: View {
     func shouldShowReloadButton() -> Bool{
         print("offsetY: \(offsetY) originY: \(originY)")
         let tempY = offsetY - originY
-        if tempY >= 0{
+        if tempY > 0{
             return true
         }else{
             return false

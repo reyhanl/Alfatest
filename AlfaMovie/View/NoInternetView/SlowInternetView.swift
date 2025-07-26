@@ -16,7 +16,7 @@ struct SlowInternetView: View{
         HStack(){
             Group{
                 Text("Your internet seems to be slow, reload?").font(.system(size: 14).bold())
-                Image(systemName: "arrow.trianglehead.2.clockwise").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 14, height: 14).foregroundStyle(.white).tint(.white)
+                Image(systemName: "arrow.trianglehead.2.clockwise").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 14, height: 14).foregroundStyle(Color(uiColor: .systemBackground)).tint(Color(uiColor: .systemBackground))
             }.padding(.horizontal, 10).padding(.vertical, 10)
         }
         .background(Color(hex: "CBAE38"))

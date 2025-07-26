@@ -20,7 +20,7 @@ struct ReviewView: View {
                 Text(review.content)
             }.padding(10)
         }
-        .background(Color.white)
+        .background(Color(uiColor: .systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(content: {
             RoundedRectangle(cornerRadius: 10).stroke(.gray, style: .init(lineWidth: 1)).opacity(0.4)

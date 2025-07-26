@@ -18,112 +18,116 @@ struct BannerView: View {
     var actions: Actions
     
     var body: some View {
-        ZStack{
-            GeometryReader{ geometry in
-                ZStack{
-                    ForEach(movies, id: \.id) { movie in
-                        let posterPath =  APIEndpoint.image(path: movie.posterPath ?? "", size: 200).url
-                        ZStack{
-                            Group{
-                                ZStack{
-                                    Color.gray
-                                    AsyncImage(url: URL(string: posterPath)){ result in
-                                        result.image?
-                                            .resizable()
-                                            .scaledToFill()
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    }
-                                }
-                                .frame(height: geometry.size.height)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                            }
-                            VStack{
-                                Spacer()
-                                HStack{
-                                    Text(movie.title).font(.title2.bold()).foregroundStyle(.white)
-                                    Spacer()
-                                }.padding(.bottom, 30).padding(.horizontal, 10)
-                            }
-                        }
-                        .offset(x: offsetX(id: movie.uuid.uuidString), y: offsetY(id: movie.uuid.uuidString))
-                        .rotationEffect(.degrees(Double(rotation(id: movie.uuid.uuidString))), anchor: anchor(id: movie.uuid.uuidString))
-                        .opacity(Double(opacity(id: movie.uuid.uuidString)))
-                        .frame(height: geometry.size.height)
-                        .onTapGesture {
-                            actions.userClickOnBanner(movie)
-                        }
-                    }
-                    VStack{
-                        Spacer()
-                        
-                        HStack{
-                            let dotSize: CGFloat = 10
-                            let maxNumberOfDot = (bannerSize.width / dotSize) * 3 / 4
-                            ForEach(0..<min(movies.count, Int(maxNumberOfDot)), id: \.self){ index in
-                                if index == currentActiveBanner % movies.count{
-                                    Color.black.frame(width: 10, height: 10).shadow(radius: 2).clipShape(Circle())
-                                }else{
-                                    Color.white.frame(width: 10, height: 10).shadow(radius: 2).clipShape(Circle())
+        GeometryReader{ geometry in
+            ZStack{
+                ForEach(movies, id: \.id) { movie in
+                    let posterPath =  APIEndpoint.image(path: movie.posterPath ?? "", size: 200).url
+                    ZStack{
+                        Group{
+                            ZStack{
+                                Color.gray
+                                AsyncImage(url: URL(string: posterPath)){ result in
+                                    result.image?
+                                        .resizable()
+                                        .scaledToFill()
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
                                 }
                             }
-                            Spacer()
+                            .frame(height: geometry.size.height)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
-                        .padding(.horizontal, 10).padding(.bottom, 10)
-                    }.background(
+                        LinearGradient(colors: [
+                            Color(uiColor: .systemBackground),
+                            .clear
+                        ], startPoint: .bottomLeading, endPoint: .topTrailing)
                         VStack{
                             Spacer()
-                            LinearGradient(colors: [.black.opacity(0.3), .clear], startPoint: .bottom, endPoint: .top).frame(height: bannerSize.height * 0.2)
+                            HStack{
+                                Text(movie.title).font(.title2.bold()).foregroundColor(.primary)
+                                Spacer()
+                            }.padding(.bottom, 30).padding(.horizontal, 10)
                         }
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                }.onAppear {
-                    bannerSize = geometry.size
-                    Task {
-                        try? await Task.sleep(nanoseconds: 500_000_000) // 500ms
-                        // Do something
-                        await MainActor.run {
-                            textIsHidden = false
+                    }
+                    .offset(x: offsetX(id: movie.uuid.uuidString), y: offsetY(id: movie.uuid.uuidString))
+                    .rotationEffect(.degrees(Double(rotation(id: movie.uuid.uuidString))), anchor: anchor(id: movie.uuid.uuidString))
+                    .opacity(Double(opacity(id: movie.uuid.uuidString)))
+                    .frame(height: geometry.size.height)
+                    .onTapGesture {
+                        actions.userClickOnBanner(movie)
+                    }
+                }
+                VStack{
+                    Spacer()
+                    
+                    HStack{
+                        let dotSize: CGFloat = 10
+                        let maxNumberOfDot = (geometry.size.width / dotSize) * 3 / 4
+                        ForEach(0..<min(movies.count, Int(maxNumberOfDot)), id: \.self){ index in
+                            if index == currentActiveBanner % movies.count{
+                                Color(uiColor: .secondaryLabel).frame(height: 10).shadow(radius: 2).clipShape(Capsule())
+                            }else{
+                                Color(uiColor: .white).frame(height: 10).shadow(radius: 2).clipShape(Capsule())
+                            }
                         }
+                    }
+                    .frame(height: 20)
+                    .padding(.horizontal, 10).padding(.bottom, 10)
+                }.background(
+                    VStack{
+                        Spacer()
+                        LinearGradient(colors: [.black.opacity(0.3), .clear], startPoint: .bottom, endPoint: .top).frame(height: bannerSize.height * 0.2)
+                    }
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .gesture(
+                DragGesture()
+                    .onChanged { gesture in
+                        withAnimation {
+                            offsetX = gesture.translation.width
+                        }
+                    }
+                
+                    .onEnded { _ in
+                        if abs(offsetX) > bannerSize.width / 2 {
+                            // First, animate the card off screen
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                offsetX = offsetX > 0 ? bannerSize.width * 1.5 : -bannerSize.width * 1.5
+                            }
+                            
+                            // After animation, update the array
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                isRemoveAnimationActive = true
+                                
+                                // Reset position and rearrange array
+                                offsetX = 0
+                                let last = movies.removeLast()
+                                movies.insert(last, at: 0)
+                                currentActiveBanner += 1
+                                
+                                isRemoveAnimationActive = false
+                            }
+                        } else {
+                            withAnimation(.easeOut(duration: 0.15)) {
+                                offsetX = 0
+                            }
+                        }
+                    }
+            )
+            .onAppear {
+                bannerSize = geometry.size
+                Task {
+                    try? await Task.sleep(nanoseconds: 500_000_000) // 500ms
+                    // Do something
+                    await MainActor.run {
+                        textIsHidden = false
                     }
                 }
             }
-            .padding(.horizontal, 10)
-            
         }
-        .gesture(
-            DragGesture()
-                .onChanged { gesture in
-                    withAnimation {
-                        offsetX = gesture.translation.width
-                    }
-                }
-            
-                .onEnded { _ in
-                    if abs(offsetX) > bannerSize.width / 2 {
-                        // First, animate the card off screen
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            offsetX = offsetX > 0 ? bannerSize.width * 1.5 : -bannerSize.width * 1.5
-                        }
-                        
-                        // After animation, update the array
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            isRemoveAnimationActive = true
-                            
-                            // Reset position and rearrange array
-                            offsetX = 0
-                            let last = movies.removeLast()
-                            movies.insert(last, at: 0)
-                            currentActiveBanner += 1
-                            
-                            isRemoveAnimationActive = false
-                        }
-                    } else {
-                        withAnimation(.easeOut(duration: 0.15)) {
-                            offsetX = 0
-                        }
-                    }
-                }
-        )
+        .padding(.horizontal, 10)
+        
     }
     
     func index(id: String) -> Int?{

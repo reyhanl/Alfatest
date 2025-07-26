@@ -26,16 +26,19 @@ struct MovieDetailView: View {
     var body: some View {
         ZStack{
             VStack{
-                GeometryReader{ geometry in
-                    Color.white.onAppear {
-                        screenSize = geometry.size
-                        safeAreaBottom = geometry.safeAreaInsets.bottom
-                        safeAreaTop = geometry.safeAreaInsets.bottom
+                Color.clear.overlay {
+                    GeometryReader{ geometry in
+                        Color(uiColor: .systemBackground).onAppear {
+                            screenSize = geometry.size
+                            safeAreaBottom = geometry.safeAreaInsets.bottom
+                            safeAreaTop = geometry.safeAreaInsets.top
+                            print("safe area: \(safeAreaTop)")
+                        }
                     }
                 }
             }
             VStack(spacing: 0){
-                ScrollView {
+                ScrollView(showsIndicators: false){
                     VStack(spacing: 0){
                         Color.clear.frame(height: 0).overlay {
                             GeometryReader{ geometry in
@@ -55,7 +58,7 @@ struct MovieDetailView: View {
                             }
                         }
                         VStack(spacing: padding){
-                            ScrollView(.horizontal){
+                            ScrollView(.horizontal, showsIndicators: false){
                                 LazyHStack(spacing: 0){
                                     if let images = vm.images{
                                         ForEach(images){ image in
@@ -66,8 +69,12 @@ struct MovieDetailView: View {
                                     }
                                 }
                             }
+                            HStack{
+                                Text(vm.detail?.title ?? "").font(.system(size: 24).bold())
+                                Spacer()
+                            }.padding(.horizontal, padding)
                             section(title: "Reviews") {
-                                ScrollView(.horizontal){
+                                ScrollView(.horizontal, showsIndicators: false){
                                     LazyHStack(spacing: 0){
                                         if let reviews = vm.reviews{
                                             ForEach(0..<reviews.count, id: \.self){ index in
@@ -91,7 +98,7 @@ struct MovieDetailView: View {
                                         ZStack{
                                             CardView(thumbnail: APIEndpoint.youtubeThumbnail(id: video.key).url, cornerRadius: 10)
                                                 .frame(height: 200)
-                                            Image(systemName: "play.fill").resizable().foregroundStyle(.white).frame(width: 50, height: 50)
+                                            Image(systemName: "play.fill").resizable().foregroundStyle(.primary).frame(width: 50, height: 50)
                                                 .shadow(color: .black.opacity(0.8), radius: 4)
                                         }
                                         .contentShape(Rectangle())
@@ -102,7 +109,7 @@ struct MovieDetailView: View {
                                     
                                 }
                             }
-                        }.padding(.bottom, safeAreaBottom).offset(y: calculatedOffsetY())
+                        }.padding(.bottom, safeAreaBottom + 20).offset(y: calculatedOffsetY())
                     }
                 }
             }.ignoresSafeArea()
@@ -146,7 +153,9 @@ struct MovieDetailView: View {
         .navigationBarBackButtonHidden(true) // Add this
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
-                Image(systemName: "chevron.left").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 20, height: 20).tint(.white).foregroundStyle(.white).contentShape(Rectangle()).onTapGesture {
+                Image(systemName: "chevron.left").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 20, height: 20).tint(Color(uiColor: .systemBackground)).foregroundStyle(Color(uiColor: .systemBackground))
+                    .shadow(color: Color.primary, radius: 4)
+                    .contentShape(Rectangle()).onTapGesture {
                     dismiss()
                 }
             }
@@ -192,7 +201,7 @@ struct MovieDetailView: View {
     func offsetChange(y: CGFloat){
         print("offsetY: \(offsetY) originY: \(originY)")
         let tempY = offsetY - originY
-        if tempY >= reloadYPoint{
+        if tempY > reloadYPoint{
             vm.refresh()
         }
         nonAnimatedOffsetY = y
@@ -204,7 +213,7 @@ struct MovieDetailView: View {
     func shouldShowReloadButton() -> Bool{
         print("offsetY: \(offsetY) originY: \(originY)")
         let tempY = offsetY - originY
-        if tempY >= 0{
+        if tempY > 0{
             return true
         }else{
             return false
