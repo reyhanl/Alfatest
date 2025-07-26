@@ -40,4 +40,28 @@ extension View {
         if mask.contains(.portraitUpsideDown) { return .portraitUpsideDown }
         return nil
     }
+    
+    @ViewBuilder
+    func shimmer(when isLoading: Binding<Bool>) -> some View {
+        if isLoading.wrappedValue {
+            self.modifier(Shimmer())
+                .redacted(reason: isLoading.wrappedValue ? .placeholder : [])
+        } else {
+            self
+        }
+    }
+    
+//    @ViewBuilder
+//    func shimmer() -> some View {
+//        if isLoading.wrappedValue {
+//            self.modifier(Shimmer())
+//                .redacted(reason: .placeholder)
+//        } else {
+//            self
+//        }
+//    }
+    
+    func shimmer() -> some View {
+        self.modifier(Shimmer())
+    }
 }

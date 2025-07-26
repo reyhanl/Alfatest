@@ -18,7 +18,7 @@ enum RemoteConfigValueKey: String {
  */
 final class RemoteConfigProvider {
     static let shared = RemoteConfigProvider()
-    var loadingDoneCallback: (() -> Void)?
+    var loadingDoneCallback: ((Error?) -> Void)?
     var fetchComplete = false
     var isDebug = true
     
@@ -46,8 +46,9 @@ final class RemoteConfigProvider {
      to define the defualt values as well.
      */
     func loadDefaultValues() {
+        let authentication = UserDefaults.standard.value(forKey: "remoteConfigAuthentication") as? String ?? ""
         let appDefaults: [String: Any?] = [
-            RemoteConfigValueKey.authentication.rawValue: ""
+            RemoteConfigValueKey.authentication.rawValue: authentication
         ]
         remoteConfig.setDefaults(appDefaults as? [String: NSObject])
     }
@@ -93,13 +94,13 @@ final class RemoteConfigProvider {
                     self.fetchComplete = true
                     print("Remote config fetch success")
                     DispatchQueue.main.async {
-                        self.loadingDoneCallback?()
+                        self.loadingDoneCallback?(nil)
                     }
                 }
             } else {
                 print("Remote config fetch failed")
                 DispatchQueue.main.async {
-                    self.loadingDoneCallback?()
+                    self.loadingDoneCallback?(error)
                 }
             }
         }

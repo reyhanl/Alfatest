@@ -23,6 +23,7 @@ struct Movie: Codable, Hashable {
     let video: Bool
     let voteAverage: Double
     let voteCount: Int
+    let uuid = UUID()
 
     enum CodingKeys: String, CodingKey {
         case adult
