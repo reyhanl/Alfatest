@@ -56,29 +56,31 @@ struct BannerView: View {
                         actions.userClickOnBanner(movie)
                     }
                 }
-                VStack{
-                    Spacer()
-                    
-                    HStack{
-                        let dotSize: CGFloat = 10
-                        let maxNumberOfDot = (geometry.size.width / dotSize) * 3 / 4
-                        ForEach(0..<min(movies.count, Int(maxNumberOfDot)), id: \.self){ index in
-                            if index == currentActiveBanner % movies.count{
-                                Color(uiColor: .secondaryLabel).frame(height: 10).shadow(radius: 2).clipShape(Capsule())
-                            }else{
-                                Color(uiColor: .white).frame(height: 10).shadow(radius: 2).clipShape(Capsule())
-                            }
-                        }
-                    }
-                    .frame(height: 20)
-                    .padding(.horizontal, 10).padding(.bottom, 10)
-                }.background(
+                if movies.count > 0{
                     VStack{
                         Spacer()
-                        LinearGradient(colors: [.black.opacity(0.3), .clear], startPoint: .bottom, endPoint: .top).frame(height: bannerSize.height * 0.2)
-                    }
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        
+                        HStack{
+                            let dotSize: CGFloat = 10
+                            let maxNumberOfDot = (geometry.size.width / dotSize) * 3 / 4
+                            ForEach(0..<min(movies.count, Int(maxNumberOfDot)), id: \.self){ index in
+                                if index == currentActiveBanner % movies.count{
+                                    Color(uiColor: .secondaryLabel).frame(height: 10).shadow(radius: 2).clipShape(Capsule())
+                                }else{
+                                    Color(uiColor: .white).frame(height: 10).shadow(radius: 2).clipShape(Capsule())
+                                }
+                            }
+                        }
+                        .frame(height: 20)
+                        .padding(.horizontal, 10).padding(.bottom, 10)
+                    }.background(
+                        VStack{
+                            Spacer()
+                            LinearGradient(colors: [.black.opacity(0.3), .clear], startPoint: .bottom, endPoint: .top).frame(height: bannerSize.height * 0.2)
+                        }
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .gesture(

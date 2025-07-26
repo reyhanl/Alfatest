@@ -80,7 +80,7 @@ struct MovieDetailView: View {
                             }.padding(.horizontal, padding)
                             section(title: "Reviews") {
                                 ScrollView(.horizontal, showsIndicators: false){
-                                    LazyHStack(spacing: 0){
+                                    LazyHStack(spacing: 10){
                                         if let reviews = vm.reviews{
                                             ForEach(0..<reviews.count, id: \.self){ index in
                                                 let review = reviews[index]

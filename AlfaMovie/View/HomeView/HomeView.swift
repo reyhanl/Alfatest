@@ -62,20 +62,18 @@ struct HomeView: View {
                                 .frame(
                                     height: 200 + extraHeight()
                                 )
-
-                        
-//                            .background {
-//                                if vm.isFetchingBannerStatus{
-//                                    Color.gray
-//                                        .padding(.horizontal, 10)
-//                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                                        .shimmer()
-//                                }else{
-//                                    Color.gray
-//                                        .padding(.horizontal, 10)
-//                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                                }
-//                            }
+                            .background {
+                                if vm.isFetchingBannerStatus{
+                                    Color.gray
+                                        .padding(.horizontal, 10)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .shimmer()
+                                }else{
+                                    Color.gray
+                                        .padding(.horizontal, 10)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                }
+                            }
                             .offset(y: calculatedOffsetY())
                         let numberOfItem = 3
                         let spacing: CGFloat = 0
