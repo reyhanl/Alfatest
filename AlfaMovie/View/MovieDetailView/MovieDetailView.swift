@@ -80,23 +80,34 @@ struct MovieDetailView: View {
                             }.padding(.horizontal, padding)
                             section(title: "Reviews") {
                                 ScrollView(.horizontal, showsIndicators: false){
-                                    LazyHStack(spacing: 10){
-                                        if let reviews = vm.reviews{
+                                    if let reviews = vm.reviews, reviews.count > 0{
+                                        LazyHStack(spacing: 10){
                                             ForEach(0..<reviews.count, id: \.self){ index in
                                                 let review = reviews[index]
                                                 ReviewView(review: review).frame(width: 250, height: 150)
                                                     .padding(.leading, index == 0 ? 20:0)
                                             }
                                         }
+                                    }else{
+                                        if vm.isFetchingDetail{
+                                            reviewLoadingPlaceholder()
+                                        }else{
+                                            HStack{
+                                                Text("There are no reviews for this movie")
+                                                Spacer()
+                                            }.padding(.horizontal, padding)
+                                        }
                                     }
                                 }
-                            }.if(vm.isFetchingReview){ view in
-                                view.shimmer()
                             }
                             section(title: "About Movie") {
-                                VStack{
-                                    Text(vm.detail?.overview ?? "")
-                                }.padding(.horizontal, padding)
+                                if vm.isFetchingDetail{
+                                    detailPlaceholder().padding(.horizontal, padding)
+                                }else{
+                                    VStack{
+                                        Text(vm.detail?.overview ?? "")
+                                    }.padding(.horizontal, padding)
+                                }
                             }
                             section(title: "Trailer") {
                                 if let video = vm.videos?.first(where: {$0.type == .trailer}){
@@ -105,7 +116,7 @@ struct MovieDetailView: View {
                                         ZStack{
                                             CardView(thumbnail: APIEndpoint.youtubeThumbnail(id: video.key).url, cornerRadius: 10)
                                                 .frame(height: 200)
-                                            Image(systemName: "play.fill").resizable().foregroundStyle(.primary).frame(width: 50, height: 50)
+                                            Image(systemName: "play.fill").resizable().foregroundStyle(.white).frame(width: 50, height: 50)
                                                 .shadow(color: .black.opacity(0.8), radius: 4)
                                         }
                                         .contentShape(Rectangle())
@@ -123,7 +134,7 @@ struct MovieDetailView: View {
             VStack{
                 Image(AssetImage.reloadImage.rawValue).resizable().frame(width: 50, height: 50).scaleEffect(scaleReloadImage())
                     .rotationEffect(.degrees(rotation), anchor: .center)
-                    .padding(.top, safeAreaTop + extraHeight())
+                    .padding(.top, vm.isReloading ? reloadYPoint:safeAreaTop + extraHeight())
                     .opacity(shouldShowReloadButton() ? 1:0)
                     .onAppear() {
                         if vm.isReloading {
@@ -163,8 +174,8 @@ struct MovieDetailView: View {
                 Image(systemName: "chevron.left").resizable().renderingMode(.template).aspectRatio(contentMode: .fit).frame(width: 20, height: 20).tint(Color(uiColor: .systemBackground)).foregroundStyle(Color(uiColor: .systemBackground))
                     .shadow(color: Color.primary, radius: 4)
                     .contentShape(Rectangle()).onTapGesture {
-                    dismiss()
-                }
+                        dismiss()
+                    }
             }
         })
     }
@@ -182,6 +193,25 @@ struct MovieDetailView: View {
         .cornerRadius(12)
     }
     
+    @ViewBuilder
+    func detailPlaceholder() -> some View{
+        VStack(spacing: 10){
+            ForEach(0..<5, id: \.self){ index in
+                HStack{
+                    Color.gray.frame(height: 20).clipShape(Capsule()).shimmer()
+                }.padding(.trailing, index == 4 ? 10:0)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func reviewLoadingPlaceholder() -> some View{
+        HStack(spacing: 10){
+            Color.gray.frame(width: 150, height: 75).shimmer()
+                .padding(.leading, 20)
+            Color.gray.frame(width: 150, height: 75).shimmer()
+        }
+    }
     
     private func startRotationAnimation() {
         guard vm.isReloading else { return }
