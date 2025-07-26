@@ -14,7 +14,7 @@ class MovieDetailViewModel: ObservableObject{
     @Published var images: [MediaImage]?
     @Published var videos: [VideoItem]?
     @Published var playVideo: VideoItem?
-    @Published var shouldPlayVideo: Bool = true
+    @Published var shouldPlayVideo: Bool = false
     @Published var reviews: [Review]?
     
     @Published var isReloading: Bool = false
@@ -41,10 +41,80 @@ class MovieDetailViewModel: ObservableObject{
         fetchData()
     }
     
-    func refresh(){
-        fetchData()
+    func refresh() {
+        isReloading = true
+
+        Task {
+            do {
+                let detail = try await fetchDetail()
+                await MainActor.run {
+                    self.detail = detail
+                    self.isFetchingDetail = false
+                    self.isFetchingDetailFailed = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.isFetchingDetail = false
+                    self.isFetchingDetailFailed = true
+                    self.isReloading = false
+                }
+            }
+
+            do {
+                let reviews = try await fetchReviews()
+                await MainActor.run {
+                    self.reviews = reviews
+                    self.isFetchingReview = false
+                    self.isFetchingReviewFailed = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.isFetchingReview = false
+                    self.isFetchingReviewFailed = true
+                    self.isReloading = false
+                }
+            }
+
+            do {
+                let images = try await fetchImages()
+                await MainActor.run {
+                    self.images = images
+                    self.isFetchingImages = false
+                    self.isFetchingImagesFailed = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.isFetchingImages = false
+                    self.isFetchingImagesFailed = true
+                    self.isReloading = false
+                }
+            }
+
+            do {
+                let videos = try await fetchVideos()
+                await MainActor.run {
+                    self.videos = videos
+                    self.isFetchingVideos = false
+                    self.isFetchingVideosFailed = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.isFetchingVideos = false
+                    self.isFetchingVideosFailed = true
+                    self.isReloading = false
+                }
+            }
+
+            await MainActor.run {
+                self.isReloading = false
+                self.isReloadingFailed = self.isFetchingDetailFailed ||
+                                         self.isFetchingReviewFailed ||
+                                         self.isFetchingImagesFailed ||
+                                         self.isFetchingVideosFailed
+            }
+        }
     }
-    
+
     func observe(){
         notificationCenter.addObserver(self, selector: #selector(backOnline), name: .backOnline, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(backOnline), name: .userAskToReload, object: nil)

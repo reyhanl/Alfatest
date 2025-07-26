@@ -57,17 +57,22 @@ struct MovieDetailView: View {
                                 }
                             }
                         }
+                        let width = screenSize.width * 0.8
                         VStack(spacing: padding){
                             ScrollView(.horizontal, showsIndicators: false){
-                                LazyHStack(spacing: 0){
+                                HStack(spacing: 0){
                                     if let images = vm.images{
                                         ForEach(images){ image in
-                                            let width = screenSize.width * 0.8
                                             CardView(thumbnail: APIEndpoint.image(path: image.filePath, size: 400).url, cornerRadius: 0)
                                                 .frame(width: screenSize.width * 0.8, height: width + extraHeight())
                                         }
                                     }
                                 }
+                            }
+                            .frame(height: width + extraHeight())
+                            .background(.gray)
+                            .if(vm.isFetchingImages) { view in
+                                view.shimmer()
                             }
                             HStack{
                                 Text(vm.detail?.title ?? "").font(.system(size: 24).bold())
@@ -85,6 +90,8 @@ struct MovieDetailView: View {
                                         }
                                     }
                                 }
+                            }.if(vm.isFetchingReview){ view in
+                                view.shimmer()
                             }
                             section(title: "About Movie") {
                                 VStack{
@@ -213,6 +220,9 @@ struct MovieDetailView: View {
     func shouldShowReloadButton() -> Bool{
         print("offsetY: \(offsetY) originY: \(originY)")
         let tempY = offsetY - originY
+        if vm.isReloading{
+            return true
+        }
         if tempY > 0{
             return true
         }else{
@@ -226,6 +236,9 @@ struct MovieDetailView: View {
         //        if vm.isReloading{
         //            return 1
         //        }
+        if vm.isReloading{
+            return 1
+        }
         return min(1, 1 * offsetY / reloadYPoint)
     }
     

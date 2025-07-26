@@ -191,6 +191,9 @@ struct HomeView: View {
     func shouldShowReloadButton() -> Bool{
         print("offsetY: \(offsetY) originY: \(originY)")
         let tempY = offsetY - originY
+        if vm.isReloading{
+            return true
+        }
         if tempY > 0{
             return true
         }else{
