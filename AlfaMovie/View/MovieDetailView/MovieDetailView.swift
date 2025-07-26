@@ -60,7 +60,7 @@ struct MovieDetailView: View {
                         let width = screenSize.width * 0.8
                         VStack(spacing: padding){
                             ScrollView(.horizontal, showsIndicators: false){
-                                HStack(spacing: 0){
+                                LazyHStack(spacing: 0){
                                     if let images = vm.images{
                                         ForEach(images){ image in
                                             CardView(thumbnail: APIEndpoint.image(path: image.filePath, size: 400).url, cornerRadius: 0)

@@ -194,7 +194,7 @@ struct HomeView: View {
         if vm.isReloading{
             return true
         }
-        if tempY > 0{
+        if tempY > 3{
             return true
         }else{
             return false
